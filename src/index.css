@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --bg-primary: #050510;
+  --bg-secondary: #0d0d1a;
+  --bg-card: rgba(13, 13, 26, 0.85);
+  --accent-cyan: #00d4ff;
+  --accent-purple: #7c3aed;
+  --accent-pink: #f72585;
+  --accent-green: #06ffa5;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --border: rgba(0, 212, 255, 0.15);
+  --glow-cyan: 0 0 25px rgba(0, 212, 255, 0.35);
+  --glow-purple: 0 0 25px rgba(124, 58, 237, 0.35);
+  --gradient: linear-gradient(135deg, #00d4ff, #7c3aed);
+  --gradient-2: linear-gradient(135deg, #f72585, #7c3aed);
+  --gradient-3: linear-gradient(135deg, #06ffa5, #00d4ff);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb {
+  background: var(--gradient);
+  border-radius: 10px;
+}
+
+/* ── Custom Cursor ── */
+.cursor {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: var(--accent-cyan);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s, height 0.25s, background 0.25s;
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  position: fixed;
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid rgba(0, 212, 255, 0.7);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, border-color 0.3s;
+}
+.cursor.expand { width: 18px; height: 18px; background: var(--accent-purple); }
+.cursor-ring.expand { width: 52px; height: 52px; border-color: rgba(124, 58, 237, 0.5); }
+
+/* ── Background ── */
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 212, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orbFloat 10s ease-in-out infinite;
+}
+.orb-1 { width: 600px; height: 600px; background: rgba(0,212,255,0.07); top: -150px; left: -150px; animation-delay: 0s; }
+.orb-2 { width: 450px; height: 450px; background: rgba(124,58,237,0.08); bottom: 10%; right: -100px; animation-delay: 4s; }
+.orb-3 { width: 300px; height: 300px; background: rgba(247,37,133,0.06); top: 45%; left: 35%; animation-delay: 7s; }
+
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  40%       { transform: translate(40px,-40px) scale(1.06); }
+  70%       { transform: translate(-25px, 25px) scale(0.94); }
+}
+
+/* ── Layout ── */
+section { padding: 110px 0; position: relative; }
+.container { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+
+/* ── Section Header ── */
+.section-header { text-align: center; margin-bottom: 72px; }
+.section-tag {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.78rem;
+  color: var(--accent-cyan);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: block;
+  opacity: 0.9;
+}
+.section-title {
+  font-size: clamp(1.9rem, 4vw, 2.9rem);
+  font-weight: 800;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+.section-line {
+  width: 72px; height: 3px;
+  background: var(--gradient);
+  margin: 14px auto 0;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+.section-line::after {
+  content: '';
+  position: absolute; top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: rgba(255,255,255,0.45);
+  animation: lineShimmer 2.2s ease-in-out infinite;
+}
+@keyframes lineShimmer { to { left: 200%; } }
+
+/* ── Gradient Text ── */
+.grad { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+/* ── Buttons ── */
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 13px 30px;
+  background: var(--gradient);
+  color: #fff; border: none; border-radius: 50px;
+  font-size: 0.9rem; font-weight: 600;
+  font-family: 'Fira Code', monospace;
+  cursor: pointer; text-decoration: none;
+  transition: var(--transition);
+  position: relative; overflow: hidden;
+  letter-spacing: 0.3px;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,0.12);
+  opacity: 0; transition: opacity 0.3s;
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(0,212,255,0.35); }
+.btn-primary:hover::after { opacity: 1; }
+
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 13px 30px;
+  background: transparent;
+  color: var(--accent-cyan);
+  border: 1.5px solid var(--accent-cyan);
+  border-radius: 50px;
+  font-size: 0.9rem; font-weight: 600;
+  font-family: 'Fira Code', monospace;
+  cursor: pointer; text-decoration: none;
+  transition: var(--transition);
+}
+.btn-outline:hover {
+  background: var(--accent-cyan);
+  color: var(--bg-primary);
+  transform: translateY(-3px);
+  box-shadow: var(--glow-cyan);
+}
+
+/* ── Card Base ── */
+.glass-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  transition: var(--transition);
+}
+.glass-card:hover {
+  border-color: rgba(0,212,255,0.35);
+  box-shadow: var(--glow-cyan), inset 0 0 30px rgba(0,212,255,0.03);
+  transform: translateY(-5px);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  section { padding: 75px 0; }
+  .container { padding: 0 20px; }
+}
