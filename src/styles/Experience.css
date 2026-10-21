@@ -159,3 +159,23 @@
   .exp-meta      { align-items: flex-start; }
   .exp-card      { padding: 20px 18px; }
 }
+
+/* Role summary and duration */
+.exp-summary {
+  font-size: 0.86rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  padding-left: 14px;
+  border-left: 2px solid var(--border);
+}
+.exp-duration {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3px 10px;
+  justify-self: flex-start;
+}

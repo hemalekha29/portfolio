@@ -1,16 +1,12 @@
 import { Link } from 'react-scroll';
-import { FiGithub, FiLinkedin, FiMail, FiHeart, FiCode } from 'react-icons/fi';
-import '../styles/Footer.css';
+import { FiHeart, FiCode } from 'react-icons/fi';
+import { navigation } from '../../data/navigation';
+import { profile } from '../../data/profile';
+import { socialLinks } from '../../data/socialLinks';
+import '../../styles/Footer.css';
 
-const links = [
-  { to: 'hero',       label: '_init()' },
-  { to: 'about',      label: 'about.me' },
-  { to: 'skills',     label: 'skills[]' },
-  { to: 'experience', label: './experience' },
-  { to: 'projects',   label: 'projects{}' },
-  { to: 'education',  label: 'education()' },
-  { to: 'contact',    label: 'hire_me()' },
-];
+const footerSocials = socialLinks.filter(link => ['linkedin', 'github', 'email'].includes(link.id));
+const contactLinks = socialLinks.filter(link => ['email', 'phone', 'location'].includes(link.id));
 
 export default function Footer() {
   return (
@@ -24,7 +20,7 @@ export default function Footer() {
           <a href="#hero" className="footer-logo">
             <span className="fl-icon"><FiCode /></span>
             <span>
-              <span className="fl-name">Hemalekha S</span>
+              <span className="fl-name">{profile.name}</span>
               <span className="fl-dot">.</span>
               <span className="fl-ext">dev</span>
             </span>
@@ -34,23 +30,25 @@ export default function Footer() {
             Let's turn ideas into reality.
           </p>
           <div className="footer-socials">
-            <a href="https://www.linkedin.com/in/hema-lekha-s-91521825b" target="_blank" rel="noreferrer" className="fs-btn" aria-label="LinkedIn">
-              <FiLinkedin />
-            </a>
-            <a href="https://github.com/hemalekha29" target="_blank" rel="noreferrer" className="fs-btn" aria-label="GitHub">
-              <FiGithub />
-            </a>
-            <a href="mailto:hemalekha4@gmail.com" className="fs-btn" aria-label="Email">
-              <FiMail />
-            </a>
+            {footerSocials.map(link => (
+              <a
+                key={link.id}
+                href={link.href}
+                {...(link.external ? { target: '_blank', rel: 'noreferrer' } : {})}
+                className="fs-btn"
+                aria-label={link.label}
+              >
+                {link.icon}
+              </a>
+            ))}
           </div>
         </div>
 
         {/* Nav */}
-        <nav className="footer-nav">
+        <nav className="footer-nav" aria-label="Footer navigation">
           <span className="footer-nav-title">Navigation</span>
           <ul>
-            {links.map(({ to, label }) => (
+            {navigation.map(({ to, label }) => (
               <li key={to}>
                 <Link to={to} smooth duration={600} offset={-70} className="footer-link">
                   {label}
@@ -63,15 +61,17 @@ export default function Footer() {
         {/* Contact */}
         <div className="footer-contact">
           <span className="footer-nav-title">Contact</span>
-          <a href="mailto:hemalekha4@gmail.com" className="footer-contact-item">
-            <FiMail /> hemalekha4@gmail.com
-          </a>
-          <a href="tel:+916374852487" className="footer-contact-item">
-            +91 6374852487
-          </a>
-          <span className="footer-contact-item">
-            Coimbatore, India
-          </span>
+          {contactLinks.map(link => (
+            link.href ? (
+              <a key={link.id} href={link.href} className="footer-contact-item">
+                {link.icon} {link.handle}
+              </a>
+            ) : (
+              <span key={link.id} className="footer-contact-item">
+                {link.icon} {link.handle}
+              </span>
+            )
+          ))}
         </div>
       </div>
 
@@ -79,7 +79,7 @@ export default function Footer() {
       <div className="footer-bottom">
         <div className="container footer-bottom-inner">
           <span className="footer-copy">
-            © {new Date().getFullYear()} Hemalekha S. All rights reserved.
+            © {new Date().getFullYear()} {profile.name}. All rights reserved.
           </span>
           <span className="footer-made">
             Made with <FiHeart className="heart" /> using React &amp; Vite

@@ -1,24 +1,36 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-scroll';
-import { FiArrowDown, FiGithub, FiLinkedin, FiMail, FiDownload } from 'react-icons/fi';
-import '../styles/Hero.css';
+import { FiArrowDown, FiMail, FiDownload } from 'react-icons/fi';
+import '../../styles/Hero.css';
+import { useExperience } from '../../hooks/useExperience';
+import { projects } from '../../data/projects';
+import { techCount } from '../../data/skills';
+import { profile } from '../../data/profile';
+import { socialLinks } from '../../data/socialLinks';
+
+const heroSocials = socialLinks.filter(link =>
+  ['linkedin', 'github', 'email'].includes(link.id),
+);
 
 const roles = [
-  'MERN Stack Developer',
+  profile.title,
   'Full Stack Web Developer',
-  'React.js & Next.js Developer',
-  'TypeScript | Node.js | MongoDB',
+  'React.js & TypeScript Developer',
+  'Node.js & MongoDB Developer',
   'Software Development & Bug Fixing',
 ];
 
 export default function Hero() {
   const [roleIdx, setRoleIdx] = useState(0);
-  const [displayed, setDisplayed] = useState('');
   const [deleting, setDeleting] = useState(false);
   const [charIdx, setCharIdx] = useState(0);
   const canvasRef = useRef(null);
+  const [photoFailed, setPhotoFailed] = useState(false);
+  const { label, summary } = useExperience();
 
-  /* Typewriter */
+  /* Typewriter — `displayed` is derived, never stored */
+  const displayed = roles[roleIdx].slice(0, charIdx);
+
   useEffect(() => {
     const current = roles[roleIdx];
     let timeout;
@@ -29,10 +41,12 @@ export default function Hero() {
     } else if (deleting && charIdx > 0) {
       timeout = setTimeout(() => setCharIdx(i => i - 1), 40);
     } else if (deleting && charIdx === 0) {
-      setDeleting(false);
-      setRoleIdx(i => (i + 1) % roles.length);
+      // Async so the state update doesn't cascade within the effect body.
+      timeout = setTimeout(() => {
+        setDeleting(false);
+        setRoleIdx(i => (i + 1) % roles.length);
+      }, 400);
     }
-    setDisplayed(current.slice(0, charIdx));
     return () => clearTimeout(timeout);
   }, [charIdx, deleting, roleIdx]);
 
@@ -94,15 +108,16 @@ export default function Hero() {
     <section id="hero" className="hero-section">
       <canvas ref={canvasRef} className="hero-canvas" />
 
-      <div className="hero-content container">
+      <div className="hero-inner container">
+      <div className="hero-content">
         <div className="hero-badge" data-aos="fade-down">
           <span className="badge-dot" />
-          <span>Available for opportunities</span>
+          <span>{profile.availability.label}</span>
         </div>
 
         <h1 className="hero-name" data-aos="fade-up" data-aos-delay="100">
           <span className="name-greeting">Hi, I'm </span>
-          <span className="name-main">Hemalekha S</span>
+          <span className="name-main">{profile.name}</span>
         </h1>
 
         <div className="hero-role" data-aos="fade-up" data-aos-delay="200">
@@ -113,41 +128,47 @@ export default function Hero() {
         </div>
 
         <p className="hero-bio" data-aos="fade-up" data-aos-delay="300">
-          MERN Stack Developer crafting <span className="grad">scalable full-stack applications</span> with
-          React.js, Node.js, Express.js &amp; MongoDB. Passionate about building
-          efficient, user-focused web solutions.
+          MERN Stack Developer building <span className="grad">scalable web applications</span> with
+          React.js, Node.js, Express.js &amp; MongoDB. I develop healthcare and
+          practice-management systems — scheduling engines, role-based access and
+          payroll — where correctness under concurrency matters more than anything else.
         </p>
 
         <div className="hero-actions" data-aos="fade-up" data-aos-delay="400">
-          <Link to="contact" smooth duration={600} offset={-70}>
+          <Link to="projects" smooth duration={600} offset={-70}>
             <button className="btn-primary">
-              <FiMail /> Hire Me
+              View My Projects
             </button>
           </Link>
-          <Link to="projects" smooth duration={600} offset={-70}>
+          <a href={profile.resume.path} download={profile.resume.fileName} className="btn-outline">
+            <FiDownload /> {profile.resume.label}
+          </a>
+          <Link to="contact" smooth duration={600} offset={-70}>
             <button className="btn-outline">
-              View Work
+              <FiMail /> Contact Me
             </button>
           </Link>
         </div>
 
         <div className="hero-socials" data-aos="fade-up" data-aos-delay="500">
-          <a href="https://www.linkedin.com/in/hema-lekha-s-91521825b" target="_blank" rel="noreferrer" className="social-icon" aria-label="LinkedIn">
-            <FiLinkedin />
-          </a>
-          <a href="https://github.com/hemalekha29" target="_blank" rel="noreferrer" className="social-icon" aria-label="GitHub">
-            <FiGithub />
-          </a>
-          <a href="mailto:hemalekha4@gmail.com" className="social-icon" aria-label="Email">
-            <FiMail />
-          </a>
+          {heroSocials.map(link => (
+            <a
+              key={link.id}
+              href={link.href}
+              {...(link.external ? { target: '_blank', rel: 'noreferrer' } : {})}
+              className="social-icon"
+              aria-label={link.label}
+            >
+              {link.icon}
+            </a>
+          ))}
         </div>
 
         <div className="hero-stats" data-aos="fade-up" data-aos-delay="600">
           {[
-            { num: '7+',  label: 'Months Exp.' },
-            { num: '3+',  label: 'Projects Built' },
-            { num: '5+',  label: 'Tech Stack' },
+            summary,
+            { num: `${projects.length}+`, label: 'Projects Built' },
+            { num: `${techCount}+`,     label: 'Tech Stack' },
           ].map(({ num, label }) => (
             <div key={label} className="stat-item">
               <span className="stat-num">{num}</span>
@@ -157,11 +178,33 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <Link to="about" smooth duration={600} offset={-70} className="scroll-down">
-        <span>scroll</span>
-        <FiArrowDown className="scroll-arrow" />
-      </Link>
+        {/* Portrait */}
+        <div className="hero-visual">
+        <figure className="hero-figure" data-aos="fade-left" data-aos-delay="200">
+          <div className="photo-frame">
+            {!photoFailed && (
+              <img
+                src={profile.image}
+                alt={profile.imageAlt}
+                className="hero-photo"
+                width="1086"
+                height="1448"
+                loading="eager"
+                decoding="async"
+                onError={() => setPhotoFailed(true)}
+              />
+            )}
+            {photoFailed && (
+              <div className="photo-fallback" role="img" aria-label="Profile photo unavailable">
+                <span className="photo-initials">HS</span>
+              </div>
+            )}
+          </div>
+          <figcaption className="photo-caption">
+            <span className="photo-dot" />
+            {summary.num} {summary.label}
+          </figcaption>
+        </figure>
 
       {/* Decorative code block */}
       <div className="hero-code-block" data-aos="fade-left" data-aos-delay="300">
@@ -171,7 +214,7 @@ export default function Hero() {
         </div>
         <pre className="code-body">{`const hemalekha = {
   role: "MERN Developer",
-  exp: "7+ months",
+  exp: "${label}",
   stack: [
     "React", "Node",
     "Express", "MongoDB"
@@ -180,6 +223,14 @@ export default function Hero() {
   passion: "clean_code",
 };`}</pre>
       </div>
+        </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <Link to="about" smooth duration={600} offset={-70} className="scroll-down">
+        <span>scroll</span>
+        <FiArrowDown className="scroll-arrow" />
+      </Link>
     </section>
   );
 }

@@ -1,72 +1,41 @@
 import { useState, useRef } from "react";
 import emailjs from "@emailjs/browser";
+import { useExperience } from "../../hooks/useExperience";
+import { socialLinks, contactSocialIds, iconSocialIds } from "../../data/socialLinks";
 import {
-  FiMail,
-  FiPhone,
-  FiMapPin,
-  FiLinkedin,
-  FiGithub,
   FiSend,
   FiCheckCircle,
   FiAlertCircle,
   FiUser,
   FiMessageSquare,
+  FiMail,
 } from "react-icons/fi";
-import "../styles/Contact.css";
+import SectionHeader from "../ui/SectionHeader";
+import { emailjsConfig } from "../../config/emailjs";
+import "../../styles/Contact.css";
 
-const EMAILJS_SERVICE_ID = "service_m1o63kl";
-const EMAILJS_TEMPLATE_ID = "template_dnkxp01";
-const EMAILJS_PUBLIC_KEY = "EoLGKDxwlpAM-1U-h";
+const contacts = socialLinks
+  .filter((link) => contactSocialIds.includes(link.id))
+  .map((link) => ({
+    icon: link.icon,
+    label: link.label,
+    value: link.handle,
+    href: link.href,
+    color: link.color,
+    note: link.note,
+  }));
 
-const contacts = [
-  {
-    icon: <FiMail />,
-    label: "Email",
-    value: "hemalekha4@gmail.com",
-    href: "mailto:hemalekha4@gmail.com",
-    color: "#00d4ff",
-    note: "Typically replies within 24h",
-  },
-  {
-    icon: <FiPhone />,
-    label: "Phone",
-    value: "+91 6374852487",
-    href: "tel:+916374852487",
-    color: "#7c3aed",
-    note: "Mon – Sat, 9am – 6pm IST",
-  },
-  {
-    icon: <FiMapPin />,
-    label: "Location",
-    value: "Coimbatore, India",
-    href: null,
-    color: "#f72585",
-    note: "Open to remote work",
-  },
-];
-
-const socials = [
-  {
-    icon: <FiLinkedin />,
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/hema-lekha-s-91521825b",
-    color: "#0077B5",
-  },
-  {
-    icon: <FiGithub />,
-    label: "GitHub",
-    href: "https://github.com/hemalekha29",
-    color: "#ffffff",
-  },
-  {
-    icon: <FiMail />,
-    label: "Email",
-    href: "mailto:hemalekha4@gmail.com",
-    color: "#ea4335",
-  },
-];
+const socials = socialLinks
+  .filter((link) => iconSocialIds.includes(link.id))
+  .map((link) => ({
+    icon: link.icon,
+    label: link.label,
+    href: link.href,
+    color: link.color,
+  }));
 
 export default function Contact() {
+  const { label } = useExperience();
   const formRef = useRef(null);
   const [form, setForm] = useState({
     from_name: "",
@@ -74,23 +43,52 @@ export default function Contact() {
     subject: "",
     message: "",
   });
-  const [status, setStatus] = useState("idle"); // idle | sending | success | error
+  const [status, setStatus] = useState("idle"); // idle | sending | success | error | invalid
   const [focused, setFocused] = useState("");
+  const [errors, setErrors] = useState({});
 
-  const handleChange = (e) =>
-    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+  const validate = () => {
+    const next = {};
+    if (!form.from_name.trim()) next.from_name = "Please enter your name.";
+    if (!form.from_email.trim()) next.from_email = "Please enter your email address.";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.from_email.trim()))
+      next.from_email = "That email address doesn't look valid.";
+    if (!form.message.trim()) next.message = "Please add a message.";
+    else if (form.message.trim().length < 10)
+      next.message = "Please write a little more — at least 10 characters.";
+    return next;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((f) => ({ ...f, [name]: value }));
+    // Clear the field's error as soon as the user starts fixing it.
+    setErrors((prev) => {
+      if (!prev[name]) return prev;
+      const next = { ...prev };
+      delete next[name];
+      return next;
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.from_name || !form.from_email || !form.message) return;
+
+    const found = validate();
+    setErrors(found);
+    if (Object.keys(found).length > 0) {
+      setStatus("invalid");
+      return;
+    }
+
     setStatus("sending");
 
     try {
       await emailjs.sendForm(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
+        emailjsConfig.serviceId,
+        emailjsConfig.templateId,
         formRef.current,
-        EMAILJS_PUBLIC_KEY,
+        emailjsConfig.publicKey,
       );
       setStatus("success");
       setForm({ from_name: "", from_email: "", subject: "", message: "" });
@@ -104,20 +102,11 @@ export default function Contact() {
   return (
     <section id="contact" className="contact-section">
       <div className="container">
-        <div className="section-header" data-aos="fade-up">
-          <span className="section-tag">// hire_me()</span>
-          <h2 className="section-title">Get In Touch</h2>
-          <div className="section-line" />
-          <p
-            className="contact-subtitle"
-            data-aos="fade-up"
-            data-aos-delay="100"
-          >
-            Open to new opportunities, freelance work, or just a chat.
-            <br />
-            Drop a message and I'll get back to you!
-          </p>
-        </div>
+        <SectionHeader
+          tag="// hire_me()"
+          title="Get In Touch"
+          subtitle="Open to new opportunities, freelance work, or just a chat — drop a message and I'll get back to you."
+        />
 
         <div className="contact-grid">
           {/* ─── Left Panel ─── */}
@@ -130,7 +119,7 @@ export default function Contact() {
                 Let's Build Something <span className="grad">Amazing</span>
               </h3>
               <p className="hire-text">
-                I'm a MERN Stack Developer with 7 months of experience building
+                I'm a MERN Stack Developer with {label} building
                 scalable web apps. Ready to bring your idea to life.
               </p>
               <a
@@ -204,7 +193,7 @@ export default function Contact() {
               >
                 <div className="form-row">
                   <div
-                    className={`form-group ${focused === "name" ? "focused" : ""}`}
+                    className={`form-group ${focused === "name" ? "focused" : ""} ${errors.from_name ? "has-error" : ""}`}
                   >
                     <label htmlFor="name">
                       <FiUser /> Your Name *
@@ -218,11 +207,16 @@ export default function Contact() {
                       onChange={handleChange}
                       onFocus={() => setFocused("name")}
                       onBlur={() => setFocused("")}
+                      aria-invalid={!!errors.from_name}
+                      aria-describedby={errors.from_name ? "err-from_name" : undefined}
                       required
                     />
+                    {errors.from_name && (
+                      <span className="field-error" id="err-from_name">{errors.from_name}</span>
+                    )}
                   </div>
                   <div
-                    className={`form-group ${focused === "email" ? "focused" : ""}`}
+                    className={`form-group ${focused === "email" ? "focused" : ""} ${errors.from_email ? "has-error" : ""}`}
                   >
                     <label htmlFor="email">
                       <FiMail /> Email Address *
@@ -236,8 +230,13 @@ export default function Contact() {
                       onChange={handleChange}
                       onFocus={() => setFocused("email")}
                       onBlur={() => setFocused("")}
+                      aria-invalid={!!errors.from_email}
+                      aria-describedby={errors.from_email ? "err-from_email" : undefined}
                       required
                     />
+                    {errors.from_email && (
+                      <span className="field-error" id="err-from_email">{errors.from_email}</span>
+                    )}
                   </div>
                 </div>
 
@@ -260,7 +259,7 @@ export default function Contact() {
                 </div>
 
                 <div
-                  className={`form-group ${focused === "message" ? "focused" : ""}`}
+                  className={`form-group ${focused === "message" ? "focused" : ""} ${errors.message ? "has-error" : ""}`}
                 >
                   <label htmlFor="message">
                     <FiMessageSquare /> Message *
@@ -274,8 +273,13 @@ export default function Contact() {
                     onChange={handleChange}
                     onFocus={() => setFocused("message")}
                     onBlur={() => setFocused("")}
+                    aria-invalid={!!errors.message}
+                    aria-describedby={errors.message ? "err-message" : undefined}
                     required
                   />
+                  {errors.message && (
+                    <span className="field-error" id="err-message">{errors.message}</span>
+                  )}
                 </div>
 
                 {/* Status messages */}
@@ -288,6 +292,11 @@ export default function Contact() {
                   <div className="form-status error">
                     <FiAlertCircle /> Something went wrong. Please try emailing
                     directly.
+                  </div>
+                )}
+                {status === "invalid" && Object.keys(errors).length > 0 && (
+                  <div className="form-status error" role="alert">
+                    <FiAlertCircle /> Please fix the highlighted fields before sending.
                   </div>
                 )}
 

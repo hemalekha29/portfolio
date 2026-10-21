@@ -119,6 +119,13 @@ section { padding: 110px 0; position: relative; }
   display: block;
   opacity: 0.9;
 }
+.section-sub {
+  max-width: 640px;
+  margin: 14px auto 0;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
 .section-title {
   font-size: clamp(1.9rem, 4vw, 2.9rem);
   font-weight: 800;
@@ -207,4 +214,24 @@ section { padding: 110px 0; position: relative; }
 @media (max-width: 768px) {
   section { padding: 75px 0; }
   .container { padding: 0 20px; }
+}
+
+/* ── Lazy-loaded section placeholder ── */
+.section-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+}
+.section-fallback-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  opacity: 0.6;
+  animation: fallbackPulse 1.4s ease-in-out infinite;
+}
+@keyframes fallbackPulse {
+  0%, 100% { opacity: 0.3; }
+  50%      { opacity: 0.7; }
 }

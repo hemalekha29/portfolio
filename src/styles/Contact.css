@@ -255,3 +255,21 @@ a.ci-value:hover { opacity: 0.8; text-decoration: underline; }
   .form-row { grid-template-columns: 1fr; }
   .form-card { padding: 22px; }
 }
+
+/* Inline field validation */
+.form-group.has-error input,
+.form-group.has-error textarea {
+  border-color: var(--accent-pink);
+  box-shadow: 0 0 0 2px rgba(247, 37, 133, 0.12);
+}
+.form-group.has-error label {
+  color: var(--accent-pink);
+}
+.field-error {
+  display: block;
+  margin-top: 6px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.72rem;
+  color: var(--accent-pink);
+  letter-spacing: 0.2px;
+}
