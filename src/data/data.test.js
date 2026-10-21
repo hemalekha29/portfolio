@@ -6,6 +6,7 @@ import { education } from './education.js';
 import { navigation } from './navigation.js';
 import { certifications } from './certifications.js';
 import { parseDate } from '../utils/date.js';
+import { getTotalExperience } from '../utils/experience.js';
 
 test('the profile has every field the site depends on', () => {
   for (const key of ['name', 'title', 'email', 'image', 'imageAlt', 'summary', 'headline']) {
@@ -70,6 +71,25 @@ test('a current role has no end date', () => {
   for (const role of employment) {
     if (role.current) assert.equal(role.end, undefined, `${role.id}: a current role should not have an end date`);
   }
+});
+
+test('the internship contributes to the total experience', () => {
+  // 20 Mar 2025 -> 20 Jun 2025 is three months of professional experience.
+  const internship = employment.find(role => role.id === 'favor-web-development');
+  assert.ok(internship, 'the internship record is missing');
+  assert.equal(internship.start, '2025-03-20');
+  assert.equal(internship.end, '2025-06-20');
+  assert.equal(internship.datesPending, undefined, 'dates are now confirmed');
+});
+
+test('the total spans every role, with gaps between them not counted', () => {
+  const getTotal = getTotalExperience;
+  const now = new Date(2026, 9, 21); // 21 Oct 2026
+  const total = getTotal(employment, now);
+  // 10 months at the current role + 3 months at the internship.
+  assert.equal(total.totalMonths, 13);
+  assert.equal(total.years, 1);
+  assert.equal(total.months, 1);
 });
 
 test('every education record has the fields the card renders', () => {

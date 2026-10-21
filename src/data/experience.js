@@ -40,14 +40,8 @@ export const employment = [
     title: 'Frontend Development Intern',
     location: 'Virudhunagar, India',
     type: 'Internship',
-    // Exact dates for this internship have not been confirmed yet. Until they
-    // are, `periodLabel` is what the timeline displays and this role is
-    // excluded from the experience calculation, so the headline figure stays
-    // conservative rather than overstating it.
-    start: null,
-    end: null,
-    periodLabel: '2025',
-    datesPending: true,
+    start: '2025-03-20',
+    end: '2025-06-20',
     color: '#7c3aed',
     summary:
       'Frontend development internship focused on reusable React components and REST API integration.',

@@ -142,7 +142,7 @@ overnight picks up the new duration without a reload.
 
 ```js
 import { getExperienceLabel } from './utils/experience.js';
-getExperienceLabel(employment, new Date()); // → "10 Months Experience"
+getExperienceLabel(employment, new Date()); // → "1 Year 1 Month Experience"
 ```
 
 ---
@@ -163,7 +163,7 @@ crawlers that do not run JavaScript still see them.
 npm test
 ```
 
-53 tests covering:
+56 tests covering:
 
 - `src/utils/date.test.js` — month arithmetic, leap years, end-of-month
   anniversaries, invalid dates, merging overlapping periods
@@ -171,7 +171,7 @@ npm test
   summaries, recruiter sentence
 - `src/utils/filters.test.js` — category filtering, search, empty input
 - `src/data/data.test.js` — content integrity (required fields, unique ids,
-  valid and ordered dates, exactly one current role)
+  valid and ordered dates, exactly one current role, total across all roles)
 
 ---
 
