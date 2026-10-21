@@ -93,8 +93,10 @@
   display: block;
   width: 96px;
   height: 120px;
-  object-fit: cover;
-  object-position: top center;
+  /* Certificates come in both portrait and landscape — fit the whole
+     document rather than cropping it. */
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .cert-meta {

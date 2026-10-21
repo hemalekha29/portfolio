@@ -85,10 +85,10 @@
   box-shadow: 0 4px 20px rgba(0,0,0,0.4);
   animation: floatIcon 3s ease-in-out infinite;
 }
-.fi-0 { top: 10px;   right: -12px; animation-delay: 0s;   }
-.fi-1 { top: 60px;   left: -12px;  animation-delay: 0.7s; }
-.fi-2 { bottom: 60px;right: -12px; animation-delay: 1.4s; }
-.fi-3 { bottom: 10px;left: -12px;  animation-delay: 2.1s; }
+.fi-0 { top: 8px;    right: -30px; animation-delay: 0s;   }
+.fi-1 { top: 56px;   left: -30px;  animation-delay: 0.7s; }
+.fi-2 { bottom: 56px;right: -30px; animation-delay: 1.4s; }
+.fi-3 { bottom: 8px; left: -30px;  animation-delay: 2.1s; }
 @keyframes floatIcon {
   0%, 100% { transform: translateY(0); }
   50%       { transform: translateY(-8px); }
@@ -216,5 +216,5 @@
 }
 
 /* Two extra floating-icon positions for a six-item stack */
-.fi-4 { top: 35px;  right: -26px; animation-delay: 2.8s; }
-.fi-5 { bottom: 35px;left: -26px;  animation-delay: 3.5s; }
+.fi-4 { top: 94px;   right: -40px; animation-delay: 2.8s; }
+.fi-5 { bottom: 94px;left: -40px;  animation-delay: 3.5s; }
