@@ -4,6 +4,7 @@ import {
   SiRazorpay, SiCloudinary, SiThreedotjs, SiFramer, SiRedis,
 } from 'react-icons/si';
 import { FiZap } from 'react-icons/fi';
+import { githubRepoUrl } from './github.js';
 
 /**
  * Portfolio projects.
@@ -413,7 +414,7 @@ export const projects = [
     status: 'Live',
     color: '#f72585',
     gradient: 'linear-gradient(135deg, rgba(247,37,133,0.14), rgba(0,212,255,0.05))',
-    github: 'https://github.com/hemalekha29/subwikhashub',
+    github: githubRepoUrl('subwikhashub'),
     demo: 'https://subwikhahub.vercel.app/',
     scale: '20+ routes · 6 serverless functions',
   },
@@ -482,8 +483,8 @@ export const projects = [
     color: '#00ffa3',
     gradient: 'linear-gradient(135deg, rgba(0,255,163,0.12), rgba(0,212,255,0.05))',
     repos: [
-      { label: 'Frontend source', url: 'https://github.com/hemalekha29/todo' },
-      { label: 'Backend source', url: 'https://github.com/hemalekha29/todobackend' },
+      { label: 'Frontend source', url: githubRepoUrl('todo') },
+      { label: 'Backend source', url: githubRepoUrl('todobackend') },
     ],
     demo: 'https://todo-beige-delta-46.vercel.app/',
     scale: '43 API routes · 5 data models · 6 task views · Jest + Vitest suites',

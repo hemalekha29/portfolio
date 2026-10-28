@@ -11,8 +11,15 @@ export default function ProjectCard({ project, isOpen, onToggle, index }) {
   const p = project;
 
   /* A project can have one repository or several (a separate backend, for
-     instance). `github` is the shorthand for the single-repo case. */
-  const repos = p.repos || (p.github ? [{ label: 'Source code', url: p.github }] : []);
+     instance). `github` is the shorthand for the single-repo case. Entries
+     with no URL are dropped — that is how a repository that is not
+     published under the configured account is handled.
+
+     The padlock means "this is client work with a private repository", so
+     it is only shown for projects that say so. A project with no public
+     source simply shows no button. */
+  const repos = (p.repos || (p.github ? [{ label: 'Source code', url: p.github }] : []))
+    .filter(repo => repo.url);
 
   return (
     <article
@@ -44,11 +51,11 @@ export default function ProjectCard({ project, isOpen, onToggle, index }) {
                 <FiGithub />
               </a>
             ))
-          ) : (
+          ) : p.privateRepo ? (
             <span className="proj-action-btn is-disabled" title="Private repository — link withheld">
               <FiLock />
             </span>
-          )}
+          ) : null}
           {p.demo && (
             <a href={p.demo} target="_blank" rel="noreferrer" className="proj-action-btn" title="Live demo">
               <FiExternalLink />

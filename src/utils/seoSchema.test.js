@@ -51,7 +51,14 @@ test('the schema locates the site owner', () => {
 
 test('the schema links the social profiles', () => {
   const { sameAs } = buildPersonSchema();
-  assert.deepEqual(sameAs, [SOCIAL_URLS.github, SOCIAL_URLS.linkedin]);
+  assert.deepEqual(sameAs, [SOCIAL_URLS.github, SOCIAL_URLS.linkedin].filter(Boolean));
+});
+
+test('the schema never publishes an empty profile link', () => {
+  for (const link of buildPersonSchema().sameAs) {
+    assert.ok(link, 'a sameAs entry must not be empty');
+    assert.match(link, /^https:\/\//, 'a sameAs entry must be an absolute URL');
+  }
 });
 
 test('the schema names the current employer', () => {
@@ -66,7 +73,19 @@ test('the schema lists the technologies', () => {
 });
 
 test('the static JSON-LD in index.html matches the generated schema', () => {
-  assert.deepEqual(staticJsonLd(), buildPersonSchema());
+  /* The static block lists only the always-published accounts; the GitHub
+     account is added at runtime, so changing it never needs an edit to
+     index.html. Compare against the schema without it. */
+  assert.deepEqual(
+    staticJsonLd(),
+    buildPersonSchema({ urls: { ...SOCIAL_URLS, github: null } }),
+  );
+});
+
+test('the static JSON-LD publishes no account that is not configured', () => {
+  for (const link of staticJsonLd().sameAs) {
+    assert.ok(link, 'a sameAs entry must not be empty');
+  }
 });
 
 test('the meta description in index.html matches the profile', () => {

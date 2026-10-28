@@ -5,6 +5,7 @@ import { employment } from './experience.js';
 import { education } from './education.js';
 import { navigation } from './navigation.js';
 import { certifications } from './certifications.js';
+import { hasGitHub } from './github.js';
 import { parseDate } from '../utils/date.js';
 import { getTotalExperience } from '../utils/experience.js';
 
@@ -125,4 +126,9 @@ test('the certifications list is an array and stays valid if populated', () => {
     assert.ok(cert.name, `${cert.id}: name is required`);
     assert.ok(cert.issuer, `${cert.id}: issuer is required`);
   }
+});
+
+test('the Open Source section is only in the navigation when it is shown', () => {
+  const hasEntry = navigation.some(item => item.id === 'repositories');
+  assert.equal(hasEntry, hasGitHub());
 });

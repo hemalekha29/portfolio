@@ -17,8 +17,10 @@ export default function ProjectDetail({ project }) {
   const hasArchitecture = p.architecture?.length > 0;
 
   /* A project can have one repository or several (a separate backend, for
-     instance). `github` is the shorthand for the single-repo case. */
-  const repos = p.repos || (p.github ? [{ label: 'View source', url: p.github }] : []);
+     instance). `github` is the shorthand for the single-repo case. Entries
+     with no URL are dropped. */
+  const repos = (p.repos || (p.github ? [{ label: 'View source', url: p.github }] : []))
+    .filter(repo => repo.url);
 
   if (!hasProblem && !hasContribution && !hasFeatures && !hasChallenges && !hasArchitecture) {
     return null;

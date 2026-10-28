@@ -7,12 +7,17 @@
 
 import { FiGithub, FiLinkedin, FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
 import { SOCIAL_URLS } from './socialUrls.js';
+import { GITHUB } from './github.js';
 
-export const socialLinks = [
+/**
+ * The GitHub entry is only included while an account is configured, so
+ * nothing on the site links to an account that is not published here.
+ */
+const links = [
   {
     id: 'github',
     label: 'GitHub',
-    handle: 'hemalekha29',
+    handle: GITHUB.username,
     href: SOCIAL_URLS.github,
     icon: <FiGithub />,
     color: '#e2e8f0',
@@ -65,6 +70,15 @@ export const socialLinks = [
     note: 'Open to remote work',
   },
 ];
+
+/**
+ * A link is only published when it has somewhere to point. The location
+ * entry has no href by design — it is a fact, not a link — so it is kept
+ * by being listed explicitly rather than by the filter below.
+ */
+export const socialLinks = links.filter(
+  (link) => link.id === 'location' || link.href,
+);
 
 /** Look up a single link by id. */
 export const getSocialLink = (id) => socialLinks.find((link) => link.id === id) || null;

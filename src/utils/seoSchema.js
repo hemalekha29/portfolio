@@ -56,6 +56,8 @@ export function buildPersonSchema({
       addressLocality: locality || undefined,
       addressRegion: region || undefined,
     },
+    /* Only the accounts that are actually published. A GitHub account that
+       is not configured contributes nothing. */
     sameAs: [urls.github, urls.linkedin].filter(Boolean),
     worksFor: {
       '@type': 'Organization',

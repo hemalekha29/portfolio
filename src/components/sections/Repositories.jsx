@@ -1,5 +1,6 @@
 import { FiGithub, FiExternalLink, FiCode } from 'react-icons/fi';
-import { repositories, githubProfileUrl } from '../../data/repositories';
+import { repositories } from '../../data/repositories';
+import { githubProfileUrl, hasGitHub } from '../../data/github.js';
 import SectionHeader from '../ui/SectionHeader';
 import '../../styles/Repositories.css';
 
@@ -9,8 +10,13 @@ import '../../styles/Repositories.css';
  * The point of this section is verifiability: every card links straight to
  * a public repository, so a reader can check the work rather than take a
  * screenshot of it on trust.
+ *
+ * The whole section is hidden while no GitHub account is configured — every
+ * card links to the account, so with no account there is nothing to show.
  */
 export default function Repositories() {
+  if (!hasGitHub()) return null;
+
   return (
     <section id="repositories" className="repo-section">
       <div className="container">
@@ -67,7 +73,7 @@ export default function Repositories() {
         </div>
 
         <div className="repo-more" data-aos="fade-up">
-          <a href={githubProfileUrl} target="_blank" rel="noreferrer" className="btn-outline">
+          <a href={githubProfileUrl()} target="_blank" rel="noreferrer" className="btn-outline">
             <FiGithub /> See every repository
           </a>
         </div>

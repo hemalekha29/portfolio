@@ -38,7 +38,11 @@
 
     <!-- Structured data. This is the same graph the SeoManager writes at
          runtime, generated from src/data/profile.js — seoSchema.test.js
-         compares the two so they cannot drift apart. -->
+         compares the two so they cannot drift apart.
+
+         Only the always-published accounts are listed here. The GitHub
+         account is added at runtime from src/data/github.js, so changing
+         the account never needs an edit to this file. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -55,7 +59,6 @@
           "addressRegion": "India"
         },
         "sameAs": [
-          "https://github.com/hemalekha29",
           "https://www.linkedin.com/in/hema-lekha-s-91521825b"
         ],
         "worksFor": {
