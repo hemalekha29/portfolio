@@ -70,6 +70,24 @@
   background: rgba(0, 212, 255, 0.16);
 }
 
+/* Engagement-type row */
+.project-types {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+.project-types-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
 /* Search */
 .project-search {
   position: relative;
@@ -642,7 +660,7 @@
   border-radius: 7px;
   background: color-mix(in srgb, var(--accent-purple) 12%, transparent);
   border: 1px solid color-mix(in srgb, var(--accent-purple) 28%, transparent);
-  color: var(--accent-purple);
+  color: var(--accent-purple-text);
   font-size: 0.85rem;
 }
 .projects-note-text {

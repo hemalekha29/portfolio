@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { categories } from '../../data/skills';
+import { categories, skillsFor } from '../../data/skills';
 import SectionHeader from '../ui/SectionHeader';
 import '../../styles/Skills.css';
 
@@ -29,10 +29,13 @@ export default function Skills() {
           {categories.map(({ id, label, title, color, icon }) => (
             <button
               key={id}
+              type="button"
               role="tab"
               id={`tab-${id}`}
               aria-selected={activeTab === id}
               aria-controls={`panel-${id}`}
+              data-mern-zone
+              data-mern-stack={skillsFor(id).join('|')}
               className={`skill-tab ${activeTab === id ? 'active' : ''}`}
               style={{ '--tab-clr': color }}
               onClick={() => setActiveTab(id)}

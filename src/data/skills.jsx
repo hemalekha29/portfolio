@@ -1,7 +1,8 @@
 import { FiZap, FiCode, FiDatabase, FiServer, FiLayout, FiTool } from 'react-icons/fi';
 import {
   SiReact, SiJavascript, SiTypescript, SiHtml5, SiCss, SiTailwindcss,
-  SiNodedotjs, SiExpress, SiMongodb, SiMongoose, SiGit, SiGithub,
+  SiNodedotjs, SiExpress, SiMongodb, SiMongoose, SiPostgresql, SiPrisma,
+  SiRedis, SiGit, SiGithub,
   SiDocker, SiPostman,
 } from 'react-icons/si';
 
@@ -69,9 +70,9 @@ export const skillCategories = [
     skills: [
       { id: 'mongodb', name: 'MongoDB', icon: <SiMongodb />, proficiency: 'Document modelling & queries', featured: true, order: 1 },
       { id: 'mongoose', name: 'Mongoose', icon: <SiMongoose />, proficiency: 'Schemas, validation, relations', featured: true, order: 2 },
-      { id: 'postgresql', name: 'PostgreSQL', icon: <SiMongodb />, proficiency: 'Relational modelling & joins', featured: true, order: 3 },
-      { id: 'prisma', name: 'Prisma', icon: <SiMongoose />, proficiency: 'Typed schema & migrations', featured: false, order: 4 },
-      { id: 'sql', name: 'SQL Fundamentals', icon: <SiMongodb />, proficiency: 'Relational concepts & joins', featured: false, order: 5 },
+      { id: 'postgresql', name: 'PostgreSQL', icon: <SiPostgresql />, proficiency: 'Relational modelling & joins', featured: true, order: 3 },
+      { id: 'prisma', name: 'Prisma', icon: <SiPrisma />, proficiency: 'Typed schema & migrations', featured: false, order: 4 },
+      { id: 'sql', name: 'SQL Fundamentals', icon: <FiDatabase />, proficiency: 'Relational concepts & joins', featured: false, order: 5 },
     ],
   },
   {
@@ -102,7 +103,7 @@ export const skillCategories = [
       { id: 'github', name: 'GitHub', icon: <SiGithub />, proficiency: 'Repositories & pull requests', featured: true, order: 2 },
       { id: 'docker', name: 'Docker', icon: <SiDocker />, proficiency: 'Containerised environments', featured: true, order: 3 },
       { id: 'postman', name: 'Postman', icon: <SiPostman />, proficiency: 'API testing & debugging', featured: false, order: 4 },
-      { id: 'redis', name: 'Redis', icon: <SiMongodb />, proficiency: 'Caching & background queues', featured: false, order: 5 },
+      { id: 'redis', name: 'Redis', icon: <SiRedis />, proficiency: 'Caching & background queues', featured: false, order: 5 },
     ],
   },
   {
@@ -134,3 +135,9 @@ export const techCount = new Set(allSkills.map((skill) => skill.name)).size;
 
 /** Look up a category by id. */
 export const getCategory = (id) => categories.find((category) => category.id === id) || null;
+
+/** The technology names in a category — used by the architecture navigator. */
+export const skillsFor = (id) => {
+  const category = getCategory(id);
+  return category ? category.skills.map((skill) => skill.name) : [];
+};

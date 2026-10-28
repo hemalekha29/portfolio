@@ -16,6 +16,10 @@ export default function ProjectDetail({ project }) {
   const hasChallenges = p.challenges?.length > 0;
   const hasArchitecture = p.architecture?.length > 0;
 
+  /* A project can have one repository or several (a separate backend, for
+     instance). `github` is the shorthand for the single-repo case. */
+  const repos = p.repos || (p.github ? [{ label: 'View source', url: p.github }] : []);
+
   if (!hasProblem && !hasContribution && !hasFeatures && !hasChallenges && !hasArchitecture) {
     return null;
   }
@@ -90,13 +94,13 @@ export default function ProjectDetail({ project }) {
         </section>
       )}
 
-      {(p.github || p.demo) && (
+      {(repos.length > 0 || p.demo) && (
         <div className="detail-links">
-          {p.github && (
-            <a href={p.github} target="_blank" rel="noreferrer" className="detail-link-btn">
-              <FiGithub /> View source
+          {repos.map(repo => (
+            <a key={repo.url} href={repo.url} target="_blank" rel="noreferrer" className="detail-link-btn">
+              <FiGithub /> {repo.label}
             </a>
-          )}
+          ))}
           {p.demo && (
             <a href={p.demo} target="_blank" rel="noreferrer" className="detail-link-btn is-primary">
               <FiExternalLink /> Live site

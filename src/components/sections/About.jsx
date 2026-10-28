@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FiExternalLink } from 'react-icons/fi';
 import { SiMongodb, SiExpress, SiReact, SiNodedotjs, SiTypescript } from 'react-icons/si';
 import '../../styles/About.css';
 import { useExperience } from '../../hooks/useExperience';
@@ -37,40 +38,53 @@ export default function About() {
         />
 
         <div className="about-grid">
-          {/* Left – avatar & stack */}
+          {/* Left – workspace photograph & stack */}
           <div className="about-left" data-aos="fade-right">
-            <div className="avatar-wrapper">
-              <div className="avatar-ring" />
-              <div className="avatar-inner">
-                {!photoFailed ? (
-                  <img
-                    className="avatar-photo"
-                    src={profile.image}
-                    alt={profile.imageAlt}
-                    loading="lazy"
-                    decoding="async"
-                    onError={() => setPhotoFailed(true)}
-                  />
-                ) : (
-                  <span className="avatar-initials">HS</span>
-                )}
-              </div>
-              <div className="avatar-badge">
-                <span>{profile.title}</span>
-              </div>
-
-              {/* Floating stack icons */}
-              {stack.map(({ icon, label: tech, color }, i) => (
-                <div
-                  key={tech}
-                  className={`float-icon fi-${i}`}
-                  style={{ '--clr': color }}
-                  title={tech}
-                >
-                  {icon}
+            <figure
+              className="workspace-figure"
+              data-mern-zone
+              data-mern-stack={profile.stack.join('|')}
+            >
+              <div className="workspace-stage">
+                <div className="workspace-frame">
+                  {!photoFailed ? (
+                    <img
+                      className="workspace-photo"
+                      src={profile.workspaceImage}
+                      alt={profile.workspaceImageAlt}
+                      width="1672"
+                      height="941"
+                      loading="lazy"
+                      decoding="async"
+                      onError={() => setPhotoFailed(true)}
+                    />
+                  ) : (
+                    <div className="workspace-fallback" role="img" aria-label="Photograph unavailable">
+                      <span>HS</span>
+                    </div>
+                  )}
                 </div>
-              ))}
-            </div>
+
+                {/* The stack, floating around the frame — the same treatment
+                    the portrait used to have, arranged around a landscape
+                    frame instead of a circle. */}
+                {stack.map(({ icon, label: tech, color }, i) => (
+                  <span
+                    key={tech}
+                    className={`float-icon fi-${i}`}
+                    style={{ '--clr': color }}
+                    title={tech}
+                    aria-hidden="true"
+                  >
+                    {icon}
+                  </span>
+                ))}
+              </div>
+              <figcaption className="workspace-caption">
+                <span className="workspace-dot" />
+                {profile.title}
+              </figcaption>
+            </figure>
 
             {/* MERN stack pills */}
             <div className="stack-pills">
@@ -90,9 +104,18 @@ export default function About() {
 
             <p className="about-text">
               I'm a <strong>MERN Stack Developer</strong> with <strong>{label} of hands-on work</strong> building
-              production web applications. At <span className="highlight">Eethal Nad IT Solutions</span> I work
-              across React front ends and Express back ends — healthcare and practice-management systems where
-              scheduling, authentication and data isolation are the hard parts, not the forms.
+              production web applications. At{' '}
+              <a
+                className="company-link"
+                href={profile.currentCompany.url}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {profile.currentCompany.name}
+                <FiExternalLink className="company-link-icon" aria-hidden="true" />
+              </a>{' '}
+              I work across React front ends and Express back ends — healthcare and practice-management systems
+              where scheduling, authentication and data isolation are the hard parts, not the forms.
             </p>
 
             <p className="about-text">

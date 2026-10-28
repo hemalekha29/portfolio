@@ -10,12 +10,18 @@ import { techIcons } from '../../data/projects';
 export default function ProjectCard({ project, isOpen, onToggle, index }) {
   const p = project;
 
+  /* A project can have one repository or several (a separate backend, for
+     instance). `github` is the shorthand for the single-repo case. */
+  const repos = p.repos || (p.github ? [{ label: 'Source code', url: p.github }] : []);
+
   return (
     <article
       className={`project-card glass-card ${isOpen ? 'is-open' : ''}`}
       style={{ '--clr': p.color, '--grad': p.gradient }}
       data-aos="fade-up"
       data-aos-delay={index * 120}
+      data-mern-zone
+      data-mern-stack={p.tags.join('|')}
     >
       <div className="card-glow" />
 
@@ -24,10 +30,20 @@ export default function ProjectCard({ project, isOpen, onToggle, index }) {
           <span className="proj-num">{p.num}</span>
         </div>
         <div className="proj-actions">
-          {p.github ? (
-            <a href={p.github} target="_blank" rel="noreferrer" className="proj-action-btn" title="Source code">
-              <FiGithub />
-            </a>
+          {repos.length > 0 ? (
+            repos.map(repo => (
+              <a
+                key={repo.url}
+                href={repo.url}
+                target="_blank"
+                rel="noreferrer"
+                className="proj-action-btn"
+                title={repo.label}
+                aria-label={repo.label}
+              >
+                <FiGithub />
+              </a>
+            ))
           ) : (
             <span className="proj-action-btn is-disabled" title="Private repository — link withheld">
               <FiLock />
@@ -64,6 +80,7 @@ export default function ProjectCard({ project, isOpen, onToggle, index }) {
       </div>
 
       <button
+        type="button"
         className="proj-expand"
         onClick={onToggle}
         aria-expanded={isOpen}

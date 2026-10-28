@@ -40,7 +40,7 @@
 }
 .fl-name { color: var(--text-primary); font-weight: 700; font-size: 1rem; }
 .fl-dot  { color: var(--accent-cyan); font-weight: 900; font-size: 1rem; }
-.fl-ext  { color: var(--accent-purple); font-size: 1rem; }
+.fl-ext  { color: var(--accent-purple-text); font-size: 1rem; }
 
 .footer-tagline {
   font-size: 0.86rem;

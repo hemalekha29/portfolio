@@ -6,13 +6,14 @@
  */
 
 import { FiGithub, FiLinkedin, FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
+import { SOCIAL_URLS } from './socialUrls.js';
 
 export const socialLinks = [
   {
     id: 'github',
     label: 'GitHub',
     handle: 'hemalekha29',
-    href: 'https://github.com/hemalekha29',
+    href: SOCIAL_URLS.github,
     icon: <FiGithub />,
     color: '#e2e8f0',
     primary: true,
@@ -23,7 +24,7 @@ export const socialLinks = [
     id: 'linkedin',
     label: 'LinkedIn',
     handle: 'hema-lekha-s',
-    href: 'https://www.linkedin.com/in/hema-lekha-s-91521825b',
+    href: SOCIAL_URLS.linkedin,
     icon: <FiLinkedin />,
     color: '#00d4ff',
     primary: true,
@@ -34,7 +35,7 @@ export const socialLinks = [
     id: 'email',
     label: 'Email',
     handle: 'hemalekha4@gmail.com',
-    href: 'mailto:hemalekha4@gmail.com',
+    href: SOCIAL_URLS.email,
     icon: <FiMail />,
     color: '#f72585',
     primary: true,
@@ -45,7 +46,7 @@ export const socialLinks = [
     id: 'phone',
     label: 'Phone',
     handle: '+91 6374852487',
-    href: 'tel:+916374852487',
+    href: SOCIAL_URLS.phone,
     icon: <FiPhone />,
     color: '#7c3aed',
     primary: false,

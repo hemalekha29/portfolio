@@ -1,0 +1,132 @@
+.repo-section {
+  background: linear-gradient(180deg, transparent, rgba(0,212,255,0.02) 50%, transparent);
+}
+
+/* ── Grid ── */
+.repo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 22px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ── Card ── */
+.repo-card {
+  position: relative;
+  overflow: hidden;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+.repo-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(0,212,255,0.35);
+  box-shadow: 0 16px 50px rgba(0,0,0,0.4), 0 0 20px rgba(0,212,255,0.12);
+}
+
+/* ── Top row ── */
+.repo-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.repo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.22);
+  color: var(--accent-cyan);
+  font-size: 1rem;
+}
+
+.repo-name {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.2s;
+  overflow-wrap: anywhere;
+}
+.repo-name:hover {
+  color: var(--accent-cyan);
+  text-shadow: 0 0 16px rgba(0,212,255,0.4);
+}
+
+.repo-live {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  color: var(--text-muted);
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.repo-live:hover {
+  color: var(--accent-cyan);
+  border-color: rgba(0,212,255,0.4);
+  background: rgba(0,212,255,0.08);
+}
+
+/* ── Description ── */
+.repo-desc {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  flex: 1;
+}
+
+/* ── Footer ── */
+.repo-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.repo-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.72rem;
+  color: var(--accent-cyan);
+  white-space: nowrap;
+}
+
+.repo-stack {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+/* ── See-all link ── */
+.repo-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 44px;
+}
+
+@media (max-width: 700px) {
+  .repo-grid { grid-template-columns: 1fr; }
+  .repo-foot { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .repo-stack { text-align: left; }
+}

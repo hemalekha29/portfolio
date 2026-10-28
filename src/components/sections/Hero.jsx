@@ -135,18 +135,17 @@ export default function Hero() {
         </p>
 
         <div className="hero-actions" data-aos="fade-up" data-aos-delay="400">
-          <Link to="projects" smooth duration={600} offset={-70}>
-            <button className="btn-primary">
-              View My Projects
-            </button>
+          {/* The scroll link is the control itself. A <button> nested inside
+              the anchor would be invalid HTML and would confuse keyboard
+              and screen-reader users. */}
+          <Link to="projects" smooth duration={600} offset={-70} className="btn-primary">
+            View My Projects
           </Link>
           <a href={profile.resume.path} download={profile.resume.fileName} className="btn-outline">
             <FiDownload /> {profile.resume.label}
           </a>
-          <Link to="contact" smooth duration={600} offset={-70}>
-            <button className="btn-outline">
-              <FiMail /> Contact Me
-            </button>
+          <Link to="contact" smooth duration={600} offset={-70} className="btn-outline">
+            <FiMail /> Contact Me
           </Link>
         </div>
 
@@ -207,7 +206,8 @@ export default function Hero() {
         </figure>
 
       {/* Decorative code block */}
-      <div className="hero-code-block" data-aos="fade-left" data-aos-delay="300">
+      <div className="hero-code-block" data-aos="fade-left" data-aos-delay="300" data-mern-stack={profile.stack.join('|')}
+        data-mern-zone>
         <div className="code-header">
           <span className="dot red" /><span className="dot yellow" /><span className="dot green" />
           <span className="code-file">profile.js</span>

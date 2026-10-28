@@ -9,6 +9,7 @@ export const navigation = [
   { id: 'skills', to: 'skills', label: 'skills[]', title: 'Skills' },
   { id: 'experience', to: 'experience', label: './experience', title: 'Experience' },
   { id: 'projects', to: 'projects', label: 'projects{}', title: 'Projects' },
+  { id: 'repositories', to: 'repositories', label: 'git.repositories', title: 'Open Source' },
   { id: 'education', to: 'education', label: 'education()', title: 'Education' },
   { id: 'contact', to: 'contact', label: 'hire_me()', title: 'Contact' },
 ];

@@ -73,6 +73,7 @@ export default function Navbar() {
 
         {/* Mobile Toggle */}
         <button
+          type="button"
           className="menu-btn"
           onClick={() => setOpen(!open)}
           aria-label={open ? 'Close menu' : 'Open menu'}

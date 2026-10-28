@@ -47,7 +47,7 @@
 .logo-text { font-size: 1.05rem; }
 .logo-name { color: var(--text-primary); font-weight: 700; }
 .logo-dot  { color: var(--accent-cyan); font-weight: 900; }
-.logo-ext  { color: var(--accent-purple); font-weight: 600; }
+.logo-ext  { color: var(--accent-purple-text); font-weight: 600; }
 
 /* Desktop links */
 .nav-links {

@@ -25,16 +25,18 @@ src/
 ├── components/
 │   ├── layout/        Navbar, Footer
 │   ├── sections/      Hero, About, Skills, Experience, Projects,
-│   │                  Education, Certifications, Contact
-│   ├── shared/        SeoManager
+│   │                  Repositories, Education, Certifications, Contact
+│   ├── shared/        SeoManager, devcursor/ (the WebGL cursor)
 │   └── ui/            SectionHeader, ProjectCard, ProjectDetail, EmptyState
 ├── config/            emailjs.js — third-party configuration
 ├── data/              profile, experience, education, projects, skills,
-│                      socialLinks, navigation, certifications
+│                      socialLinks, socialUrls, navigation, certifications,
+│                      repositories, codeTokens, techColors
 ├── hooks/             useExperience
 ├── pages/             NotFound
 ├── styles/            one stylesheet per section
-└── utils/             date.js, experience.js, filters.js (+ tests)
+└── utils/             date.js, experience.js, filters.js, seoSchema.js,
+                       flowGeometry.js, tokenPool.js (+ tests)
 ```
 
 **Layers.** `data` holds what the site says. `utils` holds pure logic (date
@@ -46,10 +48,26 @@ third-party settings. Content, logic and presentation never mix.
 ## Updating your details
 
 **Everything personal lives in `src/data/profile.js`** — name, title, summary,
-email, portrait path, resume path, availability, SEO metadata, and the
-`currentRoleId` that points at your current job in `data/experience.js`.
+email, resume path, availability, SEO metadata, and the `currentRoleId` that
+points at your current job in `data/experience.js`.
 
 Change one value and it updates across the hero, about, contact and footer.
+
+### The two photographs
+
+The site uses two different photographs, each in the frame that suits it, so
+no image appears twice:
+
+| File | Used by | Shape |
+|---|---|---|
+| `public/images/hemzz-profile.jpg` | the **hero** — a studio portrait | 3:4 portrait, in a 320×380 frame |
+| `public/images/developer-working.webp` | the **about** section — a developer workspace | 16:9 landscape, in a 16:9 frame |
+| `public/images/og-image.jpg` | social preview only — not shown on the page | 1200×630 |
+
+`profile.js` holds all three paths (`image`, `workspaceImage`, `seo.image`).
+The About frame sets `height: auto` alongside `aspect-ratio: 16 / 9` — without
+it, the `<img>` height attribute becomes a real height and the photograph is
+cropped into a narrow portrait.
 
 ### Add or edit a project — `src/data/projects.jsx`
 
@@ -163,13 +181,19 @@ crawlers that do not run JavaScript still see them.
 npm test
 ```
 
-56 tests covering:
+102 tests covering:
 
 - `src/utils/date.test.js` — month arithmetic, leap years, end-of-month
   anniversaries, invalid dates, merging overlapping periods
 - `src/utils/experience.test.js` — total vs. current-role duration, labels,
   summaries, recruiter sentence
-- `src/utils/filters.test.js` — category filtering, search, empty input
+- `src/utils/filters.test.js` — category and engagement-type filtering,
+  faceted counts, search, empty input
+- `src/utils/seoSchema.test.js` — the JSON-LD `Person` graph, and a check
+  that the static copy in `index.html` still matches the generated one
+- `src/utils/flowGeometry.test.js` — the architecture-navigator layout
+- `src/utils/tokenPool.test.js` — the code-stream token pool
+- `src/components/shared/devcursor/glyphAtlas.test.js` — glyph packing
 - `src/data/data.test.js` — content integrity (required fields, unique ids,
   valid and ordered dates, exactly one current role, total across all roles)
 

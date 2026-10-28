@@ -417,4 +417,75 @@ export const projects = [
     demo: 'https://subwikhahub.vercel.app/',
     scale: '20+ routes · 6 serverless functions',
   },
+  {
+    num: '06',
+    title: 'Flow — Task & Productivity Platform',
+    slug: 'flow-productivity',
+    category: 'productivity',
+    type: 'personal',
+    featured: true,
+    order: 6,
+    /** Optional screenshot/thumbnail path. Null renders a gradient placeholder. */
+    thumbnail: null,
+    subtitle: 'Full-stack MERN + TypeScript productivity app',
+    summary:
+      'A task and productivity application built as a proper product rather than a CRUD demo: an inbox for fast capture, a Today view, recurring tasks, subtasks, comments, projects, categories and tags, a calendar, and a dashboard — with a TypeScript API behind it.',
+    problem:
+      'Most task managers fall over in the same three places: authentication that leaks tokens, spreadsheet imports that fail wholesale on one bad row, and authorisation that confirms a record exists to someone who should not know it does. I wanted an app that got those right from the start.',
+    contribution:
+      'I built the whole thing — the Express + TypeScript API, the React + TypeScript SPA, and the test suites on both sides. The frontend and backend live in separate public repositories, linked below.',
+    features: [
+      'JWT auth with rotating refresh tokens',
+      'Tasks with subtasks, comments & activity history',
+      'Recurring tasks with automatic next occurrence',
+      'Inbox, Today, Upcoming & Calendar views',
+      'Projects, categories & freeform tags',
+      'Bulk import from Excel / CSV',
+      'Global debounced search',
+      'User settings — timezone, date format, defaults',
+      'Keyboard shortcuts & accessible modals',
+    ],
+    challenges: [
+      {
+        title: 'Kept the access token out of reach of injected scripts',
+        detail:
+          'Tokens are issued as httpOnly cookies rather than written to localStorage, so a script injected into the page cannot read them. A short-lived access token is held in memory and refreshed through a rotating httpOnly refresh cookie, and the API also accepts a Bearer token so it can be driven from scripts and tests directly.',
+      },
+      {
+        title: 'Chose the spreadsheet library for its security record, not its popularity',
+        detail:
+          'The commonly used `xlsx` build on the npm registry carries unpatched high-severity prototype-pollution and ReDoS advisories. This is the one place in the app that parses files uploaded by strangers, so I used ExcelJS instead — and wrote the importer so each row either imports or reports its own error, with a 500-row and 5 MB cap.',
+      },
+      {
+        title: 'Made authorisation answers the same for every user',
+        detail:
+          'Every read and write filters on the owner as well as the id, so another account\'s id simply does not match. That returns a 404 rather than a 403, which means the response never confirms that the record exists.',
+      },
+      {
+        title: 'Split server state from interface state on purpose',
+        detail:
+          'All server data lives in the query cache; a small store holds only the handful of genuinely global interface concerns — the quick-add modal, the search palette, the open task drawer. There is no store slice that mirrors data the server already owns.',
+      },
+    ],
+    architecture: [
+      'React 18 + TypeScript SPA  —  TanStack Query · React Hook Form + Zod',
+      '   |  httpOnly access & refresh cookies',
+      '   v',
+      'Express + TypeScript API  —  JWT · Zod validators · rate limits · Helmet',
+      '   |',
+      '   +--> Mongoose  --->  MongoDB (User, Todo, Project, Category, Activity)',
+      '   +--> Multer + ExcelJS  —  spreadsheet import & template',
+    ],
+    tags: ['React', 'TypeScript', 'Node.js', 'Express', 'MongoDB', 'Tailwind'],
+    period: 'Personal project',
+    status: 'Open source',
+    color: '#00ffa3',
+    gradient: 'linear-gradient(135deg, rgba(0,255,163,0.12), rgba(0,212,255,0.05))',
+    repos: [
+      { label: 'Frontend source', url: 'https://github.com/hemalekha29/todo' },
+      { label: 'Backend source', url: 'https://github.com/hemalekha29/todobackend' },
+    ],
+    demo: 'https://todo-beige-delta-46.vercel.app/',
+    scale: '43 API routes · 5 data models · 6 task views · Jest + Vitest suites',
+  },
 ];

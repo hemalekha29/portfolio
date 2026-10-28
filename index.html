@@ -6,24 +6,78 @@
          (which would 404) without showing an icon in the tab. -->
     <link rel="icon" href="data:," />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Hemalekha S – MERN Stack Developer building scalable web applications with React.js, Node.js, Express.js and MongoDB. Based in Coimbatore, India." />
+    <meta name="description" content="Hemalekha S – MERN Stack Developer building production web applications with React.js, Node.js, Express.js and MongoDB. Healthcare, practice-management and HR systems." />
     <meta name="theme-color" content="#050510" />
     <title>Hemalekha S | MERN Stack Developer</title>
+
+    <!-- Webfonts are loaded with a <link> rather than a CSS @import so the
+         browser can start the request during HTML parsing, instead of
+         waiting for the stylesheet to arrive first. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    />
+
+    <!-- Canonical — keep in sync with profile.seo.url -->
+    <link rel="canonical" href="https://hemalekha.dev/" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Hemalekha S | MERN Stack Developer" />
-    <meta property="og:description" content="MERN Stack Developer building scalable web applications with React.js, Node.js, Express.js and MongoDB." />
-    <meta property="og:image" content="/images/hemzz-profile.jpg" />
-    <meta property="og:url" content="https://hemalekha.dev" />
+    <meta property="og:description" content="Hemalekha S – MERN Stack Developer building production web applications with React.js, Node.js, Express.js and MongoDB. Healthcare, practice-management and HR systems." />
+    <meta property="og:image" content="/images/og-image.jpg" />
+    <meta property="og:url" content="https://hemalekha.dev/" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Hemalekha S | MERN Stack Developer" />
-    <meta name="twitter:description" content="MERN Stack Developer building scalable web applications with React.js, Node.js, Express.js and MongoDB." />
-    <meta name="twitter:image" content="/images/hemzz-profile.jpg" />
+    <meta name="twitter:description" content="Hemalekha S – MERN Stack Developer building production web applications with React.js, Node.js, Express.js and MongoDB. Healthcare, practice-management and HR systems." />
+    <meta name="twitter:image" content="/images/og-image.jpg" />
+
+    <!-- Structured data. This is the same graph the SeoManager writes at
+         runtime, generated from src/data/profile.js — seoSchema.test.js
+         compares the two so they cannot drift apart. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Hemalekha S",
+        "jobTitle": "MERN Stack Developer",
+        "url": "https://hemalekha.dev/",
+        "description": "MERN Stack Developer building production web applications with React, Node.js, Express and MongoDB. My work is concentrated in healthcare and practice-management software, where scheduling correctness, role-based access and data integrity are the hard parts rather than the forms.",
+        "image": "https://hemalekha.dev/images/og-image.jpg",
+        "email": "hemalekha4@gmail.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Coimbatore",
+          "addressRegion": "India"
+        },
+        "sameAs": [
+          "https://github.com/hemalekha29",
+          "https://www.linkedin.com/in/hema-lekha-s-91521825b"
+        ],
+        "worksFor": {
+          "@type": "Organization",
+          "name": "Eethal Nad IT Solutions",
+          "url": "https://eethalnaditsolutions.in/"
+        },
+        "knowsAbout": [
+          "React",
+          "Node.js",
+          "Express.js",
+          "MongoDB",
+          "TypeScript",
+          "JavaScript"
+        ]
+      }
+    </script>
   </head>
   <body>
+    <!-- Keyboard users get a way past the navigation straight to the
+         content. It stays off-screen until it takes focus. -->
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

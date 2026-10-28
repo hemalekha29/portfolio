@@ -172,7 +172,7 @@
   align-items: center;
   gap: 2px;
 }
-.role-prefix { color: var(--accent-purple); opacity: 0.8; }
+.role-prefix { color: var(--accent-purple-text); opacity: 0.8; }
 .role-text   { margin: 0 4px; }
 .role-cursor {
   display: inline-block;

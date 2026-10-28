@@ -1,16 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
 :root {
   --bg-primary: #050510;
   --bg-secondary: #0d0d1a;
   --bg-card: rgba(13, 13, 26, 0.85);
   --accent-cyan: #00d4ff;
   --accent-purple: #7c3aed;
+  /* Text-safe purple: #7c3aed is 3.56:1 on the background, which is
+     fine for fills and borders but below AA for body text. */
+  --accent-purple-text: #9d7bf7;
   --accent-pink: #f72585;
   --accent-green: #06ffa5;
   --text-primary: #e2e8f0;
   --text-secondary: #94a3b8;
-  --text-muted: #475569;
+  --text-muted: #718096;
   --border: rgba(0, 212, 255, 0.15);
   --glow-cyan: 0 0 25px rgba(0, 212, 255, 0.35);
   --glow-purple: 0 0 25px rgba(124, 58, 237, 0.35);
@@ -47,32 +48,6 @@ body {
   border-radius: 10px;
 }
 
-/* ── Custom Cursor ── */
-.cursor {
-  position: fixed;
-  width: 10px;
-  height: 10px;
-  background: var(--accent-cyan);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99999;
-  transform: translate(-50%, -50%);
-  transition: width 0.25s, height 0.25s, background 0.25s;
-  mix-blend-mode: difference;
-}
-.cursor-ring {
-  position: fixed;
-  width: 34px;
-  height: 34px;
-  border: 1.5px solid rgba(0, 212, 255, 0.7);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99998;
-  transform: translate(-50%, -50%);
-  transition: width 0.3s, height 0.3s, border-color 0.3s;
-}
-.cursor.expand { width: 18px; height: 18px; background: var(--accent-purple); }
-.cursor-ring.expand { width: 52px; height: 52px; border-color: rgba(124, 58, 237, 0.5); }
 
 /* ── Background ── */
 .grid-bg {
@@ -210,6 +185,53 @@ section { padding: 110px 0; position: relative; }
   transform: translateY(-5px);
 }
 
+/* ── Focus visibility ────────────────────────────────────────────────────
+   Keyboard users need to see where they are. Every interactive element
+   gets a visible ring when it takes focus via the keyboard, while a plain
+   mouse click leaves no ring behind (that is what :focus-visible does
+   natively, so no :focus reset is needed and no rule has to opt out).
+
+   Components that already draw their own ring — the skill tabs and the
+   project expand control — override this locally. */
+:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Inputs keep a native-looking ring so the field still reads as a field. */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 1px;
+}
+
+/* ── Skip link ───────────────────────────────────────────────────────────
+   Off-screen until focused, then it drops into the top-left corner. It is
+   the first thing in the tab order, so a keyboard user can jump past the
+   navigation straight to the page content. */
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 16px;
+  z-index: 10000;
+  padding: 11px 20px;
+  background: var(--bg-secondary);
+  color: var(--accent-cyan);
+  border: 1px solid var(--accent-cyan);
+  border-radius: 0 0 10px 10px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: var(--glow-cyan);
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 0;
+}
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
   section { padding: 75px 0; }
@@ -234,4 +256,37 @@ section { padding: 110px 0; position: relative; }
 @keyframes fallbackPulse {
   0%, 100% { opacity: 0.3; }
   50%      { opacity: 0.7; }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────────
+   A blanket reset: the drifting orbs, the spinning avatar ring, the section
+   line shimmer, the pulsing badge and the bouncing scroll arrow all keep
+   moving otherwise, which is exactly what a user asking for reduced motion
+   is asking us to stop.
+
+   AOS is disabled in JavaScript (App.jsx) when the preference is set, which
+   strips the data-aos attributes so scroll content stays visible. The rule
+   below is the belt to that braces: it guarantees the reveal state even if
+   AOS is re-initialised later. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* The drifting background orbs are decorative — stop them moving. */
+  .orb { animation: none !important; }
+  .float-icon { animation: none !important; }
+  .badge-dot { animation: none !important; }
+  .section-line::after { animation: none !important; }
+  .scroll-arrow { animation: none !important; }
 }

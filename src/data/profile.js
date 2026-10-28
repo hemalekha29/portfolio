@@ -20,6 +20,15 @@ export const profile = {
   image: '/images/hemzz-profile.jpg',
   imageAlt: 'Portrait of Hemalekha S, MERN Stack Developer',
 
+  /**
+   * The workspace photograph — a landscape shot of the developer at a
+   * laptop, used in the About section. The studio portrait above is a
+   * separate, tighter crop of the same person for the hero.
+   */
+  workspaceImage: '/images/developer-working.webp',
+  workspaceImageAlt:
+    'Hemalekha S working at a laptop in a developer workspace, with React, Node.js, Express.js and MongoDB on the wall behind her',
+
   /** Publicly reachable resume PDF. */
   resume: {
     path: '/images/Hemalekha_S_MERN_Resume.pdf',
@@ -38,6 +47,12 @@ export const profile = {
    */
   currentRoleId: 'eethal-nad-it-solutions',
 
+  /** The current employer — linked from the About section. */
+  currentCompany: {
+    name: 'Eethal Nad IT Solutions',
+    url: 'https://eethalnaditsolutions.in/',
+  },
+
   /** Short professional summary — used in the About section and meta tags. */
   summary:
     'MERN Stack Developer building production web applications with React, Node.js, Express and MongoDB. My work is concentrated in healthcare and practice-management software, where scheduling correctness, role-based access and data integrity are the hard parts rather than the forms.',
@@ -49,7 +64,7 @@ export const profile = {
     title: 'Hemalekha S | MERN Stack Developer',
     description:
       'Hemalekha S – MERN Stack Developer building production web applications with React.js, Node.js, Express.js and MongoDB. Healthcare, practice-management and HR systems.',
-    image: '/images/hemzz-profile.jpg',
+    image: '/images/og-image.jpg',
     /** Production origin. Used for canonical + Open Graph URLs. */
     url: 'https://hemalekha.dev',
     twitter: '@hemalekha29',

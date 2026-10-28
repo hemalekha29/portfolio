@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { profile } from '../../data/profile';
+import { buildPersonSchema } from '../../utils/seoSchema';
 
 /**
  * Keeps the document metadata in sync with `src/data/profile.js`.
@@ -48,6 +49,18 @@ export default function SeoManager() {
       }
       link.setAttribute('href', url);
     }
+
+    /* Structured data. `index.html` ships the same graph as static JSON-LD
+       for crawlers that do not run JavaScript; this replaces it with the
+       values generated from the profile, so the two stay identical. */
+    const schema = buildPersonSchema();
+    let ld = document.head.querySelector('script[type="application/ld+json"]');
+    if (!ld) {
+      ld = document.createElement('script');
+      ld.setAttribute('type', 'application/ld+json');
+      document.head.appendChild(ld);
+    }
+    ld.textContent = JSON.stringify(schema);
   }, []);
 
   return null;

@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -6,6 +6,7 @@ import Navbar from './components/layout/Navbar';
 import Hero from './components/sections/Hero';
 import Footer from './components/layout/Footer';
 import SeoManager from './components/shared/SeoManager';
+import DevCursor from './components/shared/devcursor/DevCursor';
 import NotFound from './pages/NotFound';
 
 /* Below-the-fold sections are loaded on demand so the first paint only
@@ -14,6 +15,7 @@ const About = lazy(() => import('./components/sections/About'));
 const Skills = lazy(() => import('./components/sections/Skills'));
 const Experience = lazy(() => import('./components/sections/Experience'));
 const Projects = lazy(() => import('./components/sections/Projects'));
+const Repositories = lazy(() => import('./components/sections/Repositories'));
 const Education = lazy(() => import('./components/sections/Education'));
 const Certifications = lazy(() => import('./components/sections/Certifications'));
 const Contact = lazy(() => import('./components/sections/Contact'));
@@ -28,72 +30,29 @@ function SectionFallback({ label }) {
 }
 
 export default function App() {
-  const cursorRef = useRef(null);
-  const ringRef = useRef(null);
-  const [cursorEnabled, setCursorEnabled] = useState(true);
   const [notFound] = useState(
     () => window.location.pathname.replace(/\/+$/, '') !== '',
   );
 
+  /* Scroll animations are skipped entirely when the user prefers reduced
+     motion. AOS's `disable` option removes the data-aos attributes, so the
+     content is simply visible rather than stuck at opacity 0. */
   useEffect(() => {
-    AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true, offset: 60 });
-  }, []);
-
-  /* The custom cursor is pointer-only: skip it on touch devices and when the
-     user has asked for reduced motion, so it never obscures or lags content. */
-  useEffect(() => {
-    const finePointer = window.matchMedia('(pointer: fine)');
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    const sync = () => setCursorEnabled(finePointer.matches && !reduceMotion.matches);
-    sync();
-
-    finePointer.addEventListener('change', sync);
-    reduceMotion.addEventListener('change', sync);
-    return () => {
-      finePointer.removeEventListener('change', sync);
-      reduceMotion.removeEventListener('change', sync);
-    };
-  }, []);
-
-  useEffect(() => {
-    const cursor = cursorRef.current;
-    const ring = ringRef.current;
-    if (!cursor || !ring) return;
-
-    let ringX = 0, ringY = 0;
-    let raf;
-
-    const move = (e) => {
-      const { clientX: x, clientY: y } = e;
-      cursor.style.left = x + 'px';
-      cursor.style.top = y + 'px';
+    const init = () => {
+      AOS.init({
+        duration: 800,
+        easing: 'ease-out-cubic',
+        once: true,
+        offset: 60,
+        disable: reduceMotion.matches,
+      });
     };
 
-    const animate = () => {
-      // ring lags behind cursor for smooth follow
-      const target = { x: parseFloat(cursor.style.left) || 0, y: parseFloat(cursor.style.top) || 0 };
-      ringX += (target.x - ringX) * 0.12;
-      ringY += (target.y - ringY) * 0.12;
-      ring.style.left = ringX + 'px';
-      ring.style.top = ringY + 'px';
-      raf = requestAnimationFrame(animate);
-    };
-    raf = requestAnimationFrame(animate);
-
-    const over = () => { cursor.classList.add('expand'); ring.classList.add('expand'); };
-    const out = () => { cursor.classList.remove('expand'); ring.classList.remove('expand'); };
-
-    document.addEventListener('mousemove', move);
-    document.querySelectorAll('a, button, .glass-card').forEach(el => {
-      el.addEventListener('mouseenter', over);
-      el.addEventListener('mouseleave', out);
-    });
-
-    return () => {
-      document.removeEventListener('mousemove', move);
-      cancelAnimationFrame(raf);
-    };
+    init();
+    reduceMotion.addEventListener('change', init);
+    return () => reduceMotion.removeEventListener('change', init);
   }, []);
 
   if (notFound) {
@@ -101,7 +60,9 @@ export default function App() {
       <>
         <SeoManager />
         <div className="grid-bg" />
-        <NotFound />
+        <main id="main-content" style={{ position: 'relative', zIndex: 1 }}>
+          <NotFound />
+        </main>
         <Footer />
       </>
     );
@@ -110,19 +71,14 @@ export default function App() {
   return (
     <>
       <SeoManager />
-      {cursorEnabled && (
-        <>
-          <div className="cursor" ref={cursorRef} />
-          <div className="cursor-ring" ref={ringRef} />
-        </>
-      )}
+      <DevCursor />
       <div className="grid-bg" />
       <div className="orb orb-1" />
       <div className="orb orb-2" />
       <div className="orb orb-3" />
 
       <Navbar />
-      <main style={{ position: 'relative', zIndex: 1 }}>
+      <main id="main-content" style={{ position: 'relative', zIndex: 1 }}>
         <Hero />
         <Suspense fallback={<SectionFallback label="about" />}>
           <About />
@@ -135,6 +91,9 @@ export default function App() {
         </Suspense>
         <Suspense fallback={<SectionFallback label="projects" />}>
           <Projects />
+        </Suspense>
+        <Suspense fallback={<SectionFallback label="repositories" />}>
+          <Repositories />
         </Suspense>
         <Suspense fallback={<SectionFallback label="education" />}>
           <Education />

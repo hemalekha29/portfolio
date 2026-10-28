@@ -27,21 +27,57 @@ export function getCategories(projects = []) {
 }
 
 /**
- * Filter by category and free-text query.
+ * The engagement types a project can have, in the order they are shown.
+ *
+ * This is a fixed list rather than something derived from the data, because
+ * the order is meaningful — company work first, personal work last — and
+ * the labels are prose, not identifiers.
+ */
+export const PROJECT_TYPES = [
+  { id: 'in-house', label: 'In-house' },
+  { id: 'client', label: 'Client' },
+  { id: 'personal', label: 'Personal' },
+];
+
+/**
+ * The engagement types actually present in a project list, with counts.
+ * @param {Array<{type?: string}>} projects
+ * @returns {Array<{id: string, label: string, count: number}>}
+ */
+export function getTypes(projects = []) {
+  const counts = new Map();
+
+  for (const project of projects) {
+    if (!project?.type) continue;
+    counts.set(project.type, (counts.get(project.type) || 0) + 1);
+  }
+
+  return PROJECT_TYPES
+    .filter(type => counts.has(type.id))
+    .map(type => ({ ...type, count: counts.get(type.id) }));
+}
+
+/**
+ * Filter by category, engagement type and free-text query.
  *
  * The query is matched against the title, summary, technologies and feature
  * list, so searching "mongodb" or "payroll" finds the right project.
  *
  * @param {Array} projects
- * @param {{category?: string, query?: string}} options
+ * @param {{category?: string, type?: string, query?: string}} options
  */
-export function filterProjects(projects = [], { category = 'all', query = '' } = {}) {
+export function filterProjects(
+  projects = [],
+  { category = 'all', type = 'all', query = '' } = {},
+) {
   const needle = query.trim().toLowerCase();
 
   return projects.filter((project) => {
     if (!project) return false;
 
     if (category && category !== 'all' && project.category !== category) return false;
+
+    if (type && type !== 'all' && project.type !== type) return false;
 
     if (!needle) return true;
 
